@@ -17,6 +17,15 @@ class ReposTableViewController: UITableViewController {
         
         self.tableView.accessibilityLabel = "tableView"
         
+        GithubAPIClient.listRepos { (repos, error) in
+            if repos != nil {
+                print("Success")
+            } else if let error = error {
+                print("Error in the vieDidLoad \(error.localizedDescription)")
+            }
+        }
+
+        
     }
 
     // MARK: - Table view data source
