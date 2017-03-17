@@ -8,20 +8,19 @@
 
 import UIKit
 
-struct GithubAPIClient {
+class GithubAPIClient {
     
-    static func listRepos(with completion: @escaping ([NSDictionary]?, Error?) -> ()) {
+    class func getRepositories(with completion: @escaping ([String : Any]?, Error?) -> ()) {
         
         let urlString = "https://api.github.com/repositories?client_id=\(Secrets.clientID)&client_secret=\(Secrets.clientSecret)"
         guard let url = URL(string: urlString) else {
             print("There was an error unwrapping the url in the GithubAPIClient")
             return
         }
-        
         _ = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else { return }
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [NSDictionary] {
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] {
                     completion(json, nil)
                 }
             } catch {
@@ -32,7 +31,6 @@ struct GithubAPIClient {
                 print("There was an error with the URLSession request in the GithubAPIClient: \(error.localizedDescription)")
             }
         }.resume()
-        
     }
     
 }

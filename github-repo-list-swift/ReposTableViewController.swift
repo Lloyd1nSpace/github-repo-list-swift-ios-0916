@@ -17,7 +17,7 @@ class ReposTableViewController: UITableViewController {
         
         self.tableView.accessibilityLabel = "tableView"
         
-        GithubAPIClient.listRepos { (repos, error) in
+        GithubAPIClient.getRepositories { (repos, error) in
             if repos != nil {
                 print("Success")
             } else if let error = error {
