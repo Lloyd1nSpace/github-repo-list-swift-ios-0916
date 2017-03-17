@@ -14,21 +14,26 @@ class ReposTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.tableView.accessibilityLabel = "tableView"
-        
-        GithubAPIClient.getRepositories { (repos, error) in
-            if repos != nil {
-                print("Success")
-            } else if let error = error {
-                print("Error in the vieDidLoad \(error.localizedDescription)")
+        store.getRepositoriesFromAPI  {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
-
-        
     }
-
-    // MARK: - Table view data source
  
+}
 
+extension ReposTableViewController {
+    //MARK: tableView Data Source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return store.repositories.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "repoCell", for: indexPath)
+        cell.textLabel?.text = store.repositories[indexPath.row].fullName
+        return cell
+    }
+    
 }
